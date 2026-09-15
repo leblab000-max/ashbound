@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var contact_interval: float = 1.0
 @export var contact_distance: float = 26.0
 @export var drop_chance: float = 0.5
+@export var currency_drop: int = 1
 
 const WEAPON_PICKUP_SCENE := preload("res://scenes/WeaponPickup.tscn")
 const WeaponDB := preload("res://scripts/WeaponDB.gd")
@@ -22,6 +23,8 @@ func _ready() -> void:
 	add_to_group("enemies")
 	health = max_health
 	_player = get_tree().get_first_node_in_group("player")
+	# Апгрейд "удача" (Meta autoload) повышает шанс выпадения оружия.
+	drop_chance = clamp(drop_chance * (1.0 + Meta.get_bonus("luck")), 0.0, 1.0)
 
 
 func _physics_process(delta: float) -> void:
@@ -43,6 +46,7 @@ func _physics_process(delta: float) -> void:
 func take_damage(amount: int) -> void:
 	health -= amount
 	if health <= 0:
+		Meta.add_currency(currency_drop)
 		_drop_weapon()
 		queue_free()
 

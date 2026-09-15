@@ -33,3 +33,52 @@ offset_top = -138.0
 offset_right = 200.0
 offset_bottom = -20.0
 script = ExtResource("4")
+
+[node name="TimerLabel" type="Label" parent="HUD"]
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = 16.0
+offset_right = 60.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+text = "0:00"
+
+[node name="EndScreen" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="Backdrop" type="ColorRect" parent="EndScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.07, 0.05, 0.04, 0.85)
+
+[node name="Center" type="CenterContainer" parent="EndScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBox" type="VBoxContainer" parent="EndScreen/Center"]
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="EndScreen/Center/VBox"]
+theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
+text = "Ты погиб"
+
+[node name="Stats" type="Label" parent="EndScreen/Center/VBox"]
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+text = "Время забега: 0:00"
+
+[node name="CurrencyEarned" type="Label" parent="EndScreen/Center/VBox"]
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+text = "Заработано эссенции: 0 (всего: 0)"
+
+[node name="RestartButton" type="Button" parent="EndScreen/Center/VBox"]
+custom_minimum_size = Vector2(160, 44)
+text = "Заново"
+
+[node name="MenuButton" type="Button" parent="EndScreen/Center/VBox"]
+custom_minimum_size = Vector2(160, 44)
+text = "В меню"

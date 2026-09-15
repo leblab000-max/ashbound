@@ -13,6 +13,10 @@ var health: int
 var inventory: Array = []       # каждый элемент: null ИЛИ {"id": String, "tier": int}
 var _slot_timers: Array = []    # таймер до следующего выстрела, параллельно inventory
 
+# Множители от постоянных апгрейдов (Meta autoload, магазин в главном меню).
+var damage_mult: float = 1.0
+var range_mult: float = 1.0
+
 signal health_changed(current: int, max_hp: int)
 signal inventory_changed
 signal died
@@ -22,6 +26,12 @@ const WeaponDB := preload("res://scripts/WeaponDB.gd")
 
 
 func _ready() -> void:
+	# Применяем постоянные апгрейды из магазина (Meta — автозагрузка, см. project.godot).
+	max_health += int(round(Meta.get_bonus("health")))
+	speed += Meta.get_bonus("speed")
+	damage_mult = 1.0 + Meta.get_bonus("damage")
+	range_mult = 1.0 + Meta.get_bonus("range")
+
 	health = max_health
 	add_to_group("player")
 	health_changed.emit(health, max_health)
@@ -69,12 +79,12 @@ func _handle_auto_attack(delta: float) -> void:
 		_slot_timers[i] -= delta
 		if _slot_timers[i] > 0.0:
 			continue
-		var wrange: float = WeaponDB.weapon_range(item["id"], item["tier"])
+		var wrange: float = WeaponDB.weapon_range(item["id"], item["tier"]) * range_mult
 		var target := _find_nearest_enemy(wrange)
 		if target == null:
 			continue
 		_slot_timers[i] = WeaponDB.weapon_interval(item["id"], item["tier"])
-		_fire_at(target, WeaponDB.weapon_damage(item["id"], item["tier"]))
+		_fire_at(target, WeaponDB.weapon_damage(item["id"], item["tier"]) * damage_mult)
 
 
 func _find_nearest_enemy(max_range: float) -> Node2D:
