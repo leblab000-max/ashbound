@@ -1,13 +1,17 @@
 extends CharacterBody2D
 
 ## Враг: идёт напрямую к игроку, при контакте наносит урон раз в contact_interval
-## секунд, умирает когда health опускается до нуля (урон наносит Bullet.gd).
+## секунд. При смерти с шансом drop_chance роняет предмет оружия для мерджа.
 
 @export var speed: float = 90.0
 @export var max_health: int = 30
 @export var contact_damage: int = 8
 @export var contact_interval: float = 1.0
 @export var contact_distance: float = 26.0
+@export var drop_chance: float = 0.5
+
+const WEAPON_PICKUP_SCENE := preload("res://scenes/WeaponPickup.tscn")
+const WeaponDB := preload("res://scripts/WeaponDB.gd")
 
 var health: int
 var _player: Node2D = null
@@ -39,4 +43,14 @@ func _physics_process(delta: float) -> void:
 func take_damage(amount: int) -> void:
 	health -= amount
 	if health <= 0:
+		_drop_weapon()
 		queue_free()
+
+
+func _drop_weapon() -> void:
+	if randf() > drop_chance:
+		return
+	var pickup := WEAPON_PICKUP_SCENE.instantiate()
+	pickup.setup(WeaponDB.random_id())
+	get_tree().current_scene.add_child(pickup)
+	pickup.global_position = global_position
