@@ -12,6 +12,7 @@ speed = 50.0
 max_health = 70
 contact_damage = 14
 contact_interval = 1.2
+contact_distance = 36.0
 drop_chance = 0.7
 currency_drop = 3
 
