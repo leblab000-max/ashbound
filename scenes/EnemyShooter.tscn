@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/EnemyShooter.gd" id="1"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 11.0
+
+[node name="EnemyShooter" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1")
+
+[node name="Visual" type="Polygon2D" parent="."]
+color = Color(0.55, 0.15, 0.65, 1)
+polygon = PackedVector2Array(0, -14, 12, 0, 0, 14, -12, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("1")

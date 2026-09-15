@@ -84,7 +84,13 @@ func _handle_auto_attack(delta: float) -> void:
 		if target == null:
 			continue
 		_slot_timers[i] = WeaponDB.weapon_interval(item["id"], item["tier"])
-		_fire_at(target, WeaponDB.weapon_damage(item["id"], item["tier"]) * damage_mult)
+		_fire_at(
+			target,
+			WeaponDB.weapon_damage(item["id"], item["tier"]) * damage_mult,
+			WeaponDB.weapon_type(item["id"]),
+			WeaponDB.weapon_pierce_count(item["id"]),
+			WeaponDB.weapon_splash_radius(item["id"])
+		)
 
 
 func _find_nearest_enemy(max_range: float) -> Node2D:
@@ -101,11 +107,11 @@ func _find_nearest_enemy(max_range: float) -> Node2D:
 	return nearest
 
 
-func _fire_at(target: Node2D, damage: float) -> void:
+func _fire_at(target: Node2D, damage: float, wtype: String, pierce_count: int, splash_radius: float) -> void:
 	var bullet := BULLET_SCENE.instantiate()
 	get_tree().current_scene.add_child(bullet)
 	bullet.global_position = global_position
-	bullet.setup(target.global_position - global_position, int(round(damage)))
+	bullet.setup(target.global_position - global_position, int(round(damage)), wtype, pierce_count, splash_radius)
 
 
 func take_damage(amount: int) -> void:

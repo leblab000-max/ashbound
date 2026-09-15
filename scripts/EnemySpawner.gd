@@ -11,8 +11,9 @@ const ENEMY_SCENES := {
 	"grunt": preload("res://scenes/Enemy.tscn"),
 	"fast": preload("res://scenes/EnemyFast.tscn"),
 	"tank": preload("res://scenes/EnemyTank.tscn"),
+	"shooter": preload("res://scenes/EnemyShooter.tscn"),
 }
-const WEIGHTS := {"grunt": 5, "fast": 3, "tank": 1}
+const WEIGHTS := {"grunt": 5, "fast": 3, "tank": 1, "shooter": 2}
 
 @export var spawn_radius: float = 420.0
 @export var initial_interval: float = 1.6
